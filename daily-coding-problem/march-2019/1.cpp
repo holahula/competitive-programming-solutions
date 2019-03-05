@@ -1,4 +1,15 @@
-#include <bits/stdc++.h>
+/*
+This problem was recently asked by Google.
+
+Given a list of numbers and a number k, return whether any two numbers from the list add up to k.
+
+For example, given [10, 15, 3, 7] and k of 17, return true since 10 + 7 is 17.
+
+Bonus: Can you do this in one pass?
+*/
+
+#include <iostream>
+
 using namespace std;
 
 int main() {
@@ -6,13 +17,13 @@ int main() {
     cin.tie(0);
     
     int inp[];
-    bool outp[] = {0};
+    bool outp[] = { false };
     int k, id;
 
-    for(int i = 0; i < inp.size(). i++){
+    for(int i = 0; i < sizeof(inp)/sizeof(inp[0]); i++){
         id = inp[i] % k;
 
-        if(outp[k-id]) return true;
+        if(outp[k-id]) return 1;
         else outp[id] = true;
     }
 
