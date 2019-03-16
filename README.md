@@ -1,1 +1,1 @@
-# competive-programming-solutions
+# competitive-programming-solutions
