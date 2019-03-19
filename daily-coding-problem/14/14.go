@@ -11,30 +11,61 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"runtime"
+	"time"
 )
 
-// square 1 * 1 L= 1u
-// circle area = pi / 4 (equation is (x-0.5)^2+(y-0.5)^2=0.5^2)
-// ratio of points inside circle to outside circle = pi / 4
-// 4 * points inside / total points
-
+func init() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+}
 func monteCarlo(points int) float64 {
 	inside := 0.0
 	for i := 0; i < points; i++ {
 		randX := rand.Float64()
 		randY := rand.Float64()
-		if i%100 == 0 {
-			fmt.Println(randX, randY)
 
-		}
 		if (math.Pow(randX, 2) + math.Pow(randY, 2)) < 1 {
 			inside++
 		}
 	}
 	return 4 * inside / float64(points)
 }
+
+func monteCarloV2(points int) float64 {
+	cpus := runtime.NumCPU()
+	threads := points / cpus
+
+	results := make(chan float64, cpus)
+	for i := 0; i < cpus; i++ {
+		go func() {
+			inside := float64(0.0)
+			r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+			for j := 0; j < threads; j++ {
+				randX, randY := r.Float64(), r.Float64()
+
+				if (math.Pow(randX, 2) + math.Pow(randY, 2)) < 1 {
+					inside++
+				}
+			}
+			results <- 4 * inside / float64(threads)
+		}()
+	}
+	total := 0.0
+	for i := 0; i < cpus; i++ {
+		total += <-results
+	}
+	return total / float64(cpus)
+}
+
 func main() {
 	// number of random simulations to run
-	points := 1000
-	fmt.Printf("%.3f\n", monteCarlo(points))
+	points := 1000000
+
+	start := time.Now()
+	fmt.Printf("%.3f %d\n", monteCarlo(points), time.Since(start))
+
+	start = time.Now()
+	fmt.Printf("%.3f %d\n", monteCarloV2(points), time.Since(start))
+
 }
