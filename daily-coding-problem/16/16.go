@@ -33,10 +33,7 @@ func (l *log) record(i int) {
 }
 
 func (l *log) getLast(i int) int {
-	num := (l.iter - i) % l.size
-	fmt.Println(l.iter, i, num)
-	item := l.arr[num]
-	return item
+	return l.arr[(l.iter-i)%l.size]
 }
 
 func main() {
@@ -49,6 +46,7 @@ func main() {
 	for i := 1; i < 7; i++ {
 		l.record(i)
 	}
+
 	fmt.Println(l.arr)
 
 	fmt.Println(l.getLast(2))
