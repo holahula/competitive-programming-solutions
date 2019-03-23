@@ -56,33 +56,30 @@ func (dq *deque) pushRight(a int) {
 }
 
 func max(arr []int, k int) {
-	dq := Deque()
-	dq.pushRight(0)
-	iter := 1
-	//pre-process
-	for dq.len < k {
-		if arr[iter] > arr[dq.arr[0]] {
-			dq.pushLeft(iter)
-		} else {
-			dq.pushRight(iter)
-		}
-		iter++
+	if len(arr) == 0 {
+		return
 	}
-	// fmt.Println(k-1, dq.arr)
+	dq := Deque()
 
-	for i := k; i < len(arr); i++ {
-		fmt.Println(arr[dq.arr[0]])
-
-		// pop left until dq[0] is inside current sub-array
-		for dq.len > 0 && dq.arr[0] <= i-k {
-			dq.popLeft()
-		}
-		// if inserting element is greater than dq[0], pop a
-		for dq.len > 0 && arr[i] > arr[dq.arr[0]] {
+	// pre-process queue such that its decreasing in size
+	for i := 0; i < k; i++ {
+		for dq.len > 0 && arr[i] > arr[dq.arr[dq.len-1]] {
 			dq.popRight()
 		}
 		dq.pushRight(i)
-		// fmt.Println(i, dq.arr)
+	}
+
+	for i := k; i < len(arr); i++ {
+		fmt.Println(arr[dq.arr[0]])
+		// pop off dq[0] if not inside current sub-array
+		if dq.len > 0 && dq.arr[0] <= i-k {
+			dq.popLeft()
+		}
+		// pop off all elements smaller than inserting element
+		for dq.len > 0 && arr[i] > arr[dq.arr[dq.len-1]] {
+			dq.popRight()
+		}
+		dq.pushRight(i)
 	}
 	fmt.Println(arr[dq.arr[0]])
 }
@@ -101,8 +98,9 @@ func bf(arr []int, k int) {
 }
 
 func main() {
-	arr := []int{10, 1, 1, 1, 1, 2, 1, 1, 1}
+	arr := []int{1, 1, 1, 1, 2}
 	k := 3
 	bf(arr, k)
+	fmt.Println()
 	max(arr, k)
 }
