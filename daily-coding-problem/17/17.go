@@ -68,7 +68,7 @@ func longestDir(path string) int {
 		return 0
 	}
 
-	fmt.Println(iter, numIndent, split[iter])
+	// fmt.Println(iter, numIndent, split[iter])
 	ans := split[iter]
 	for i := iter; i > -1; i-- {
 		if ind[i] == numIndent-1 && !isFile[i] {
@@ -88,9 +88,9 @@ func longestDir(path string) int {
 
 func main() {
 	path := "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
-	longestDir(path)
+	fmt.Println(longestDir(path))
 
 	path = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
-	longestDir(path)
+	fmt.Println(longestDir(path))
 
 }
