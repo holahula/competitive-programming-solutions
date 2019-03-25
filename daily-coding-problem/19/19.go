@@ -35,8 +35,11 @@ func ans(arr []int) int {
 	return int(min)
 }
 
-func minCost(arr [][]int, n int, k int) int {
+func minCost(arr [][]int) int {
 	// make solution array [][]
+	n := len(arr)
+	k := len(arr[0])
+
 	sol := make([]int, k)
 	prevArr := make([]int, k)
 	// manually populate 1st houses
@@ -68,6 +71,5 @@ func main() {
 		{4, 5, 6, 7},
 		{1, 4, 2, 9},
 	}
-
-	fmt.Println(minCost(a, len(a), len(a[0])))
+	fmt.Println(minCost(a))
 }
