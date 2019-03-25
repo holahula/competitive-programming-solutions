@@ -17,12 +17,13 @@ import (
 // returns the min cost that allows you to paint house i color j
 func minPrev(arr []int, index int) int {
 	min := 1<<(32<<(^uint(0)>>32&1)-1) - 1
-
+	// fmt.Println("minArr, index to avoid:", arr, index)
 	for i := 0; i < len(arr); i++ {
 		if arr[i] < min && i != index {
 			min = arr[i]
 		}
 	}
+	// fmt.Println("min", min)
 	return min
 }
 
@@ -36,21 +37,29 @@ func ans(arr []int) int {
 
 func minCost(arr [][]int, n int, k int) int {
 	// make solution array [][]
-	sol := make([][]int, n)
-	for i := range sol {
-		sol[i] = make([]int, k)
-	}
+	sol := make([]int, k)
+	prevArr := make([]int, k)
 	// manually populate 1st houses
 	for j := 0; j < k; j++ {
-		sol[0][j] = arr[0][j]
+		sol[j] = arr[0][j]
 	}
+	for i := range sol {
+		prevArr[i] = sol[i]
+	}
+
 	// iterate through houses 1 - n
 	for i := 1; i < n; i++ {
 		for j := 0; j < k; j++ {
-			sol[i][j] = arr[i][j] + minPrev(sol[i-1], j)
+			// fmt.Println(i, j)
+			// minPast := minPrev(prevArr, j)
+			// fmt.Println("curr:", arr[i][j], "min prev:", minPast)
+			sol[j] = arr[i][j] + minPrev(prevArr, j)
+		}
+		for i := range sol {
+			prevArr[i] = sol[i]
 		}
 	}
-	return ans(sol[n-1])
+	return ans(sol)
 }
 
 func main() {
@@ -60,10 +69,5 @@ func main() {
 		{1, 4, 2, 9},
 	}
 
-	// for i := 0; i < len(a); i++ {
-	// 	for j := 0; j < len(a[i]); j++ {
-	// 		fmt.Println(a[i][j])
-	// 	}
-	// }
 	fmt.Println(minCost(a, len(a), len(a[0])))
 }
