@@ -46,6 +46,28 @@ func reconstruct(dict []string, s string) []string {
 	return a
 }
 
+func r2(dict []string, s string) []string {
+	a := []string{}
+
+	dp := make([]int, len(s)+1)
+	dp[0] = 1
+
+	for i := 1; i <= len(s); i++ {
+		for j := 0; j < i; j++ {
+			if dp[j] > 0 && valid(dict, s[j:i]) {
+				dp[i] = len(s[j:i])
+				break
+			}
+		}
+	}
+
+	for iter := len(s); iter != 0; iter -= dp[iter] {
+		a = append([]string{s[iter-dp[iter] : iter]}, a...)
+	}
+
+	return a
+}
+
 func main() {
 	d1 := []string{
 		"quick",
@@ -54,21 +76,20 @@ func main() {
 		"fox",
 	}
 	s1 := "thequickbrownfox"
-	fmt.Println(reconstruct(d1, s1))
+	fmt.Println(r2(d1, s1))
 
-	d2 := []string{
-		"bed",
-		"bath",
-		"bedbath",
-		"and",
-		"beyond",
-	}
-	s2 := "bedbathandbeyond"
-	fmt.Println(reconstruct(d2, s2))
+	// d2 := []string{
+	// 	"bed",
+	// 	"bath",
+	// 	"bedbath",
+	// 	"and",
+	// 	"beyond",
+	// }
+	// s2 := "bedbathandbeyond"
+	// fmt.Println(reconstruct(d2, s2))
 
-	d3 := []string{"a", "aa", "aaa", "aaaa", "aaaaa"}
-	s3 := "aaaaab"
+	// d3 := []string{"a", "aa", "aaa", "aaaa", "aaaaa"}
+	// s3 := "aaaaab"
 
-	fmt.Println(reconstruct(d3, s3))
-
+	// fmt.Println(reconstruct(d3, s3))
 }
