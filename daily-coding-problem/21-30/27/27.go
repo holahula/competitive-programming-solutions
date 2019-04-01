@@ -14,21 +14,27 @@ package main
 
 import "fmt"
 
-// type Queue interface {
-// 	pop()
-// 	push(string)
-// 	match(string) bool
-// }
+type Queue interface {
+	pop()
+	push(string)
+	match(string) bool
+	len() bool
+}
 type queue struct {
 	arr []string
 }
 
-func Queue() *queue {
+func NewQueue() Queue {
 	return &queue{
 		arr: []string{},
 	}
 }
-
+func (q *queue) len() bool {
+	if len(q.arr) == 0 {
+		return true
+	}
+	return false
+}
 func (q *queue) pop() {
 	q.arr = q.arr[:len(q.arr)-1]
 }
@@ -47,9 +53,10 @@ func (q *queue) match(a string) bool {
 	}
 	return false
 }
+
 func balance(s string) bool {
 	// round, curly, square := 0, 0, 0
-	q := Queue()
+	q := NewQueue()
 	for i := 0; i < len(s); i++ {
 		c := string(s[i])
 		if c == "{" || c == "(" || c == "[" {
@@ -60,7 +67,7 @@ func balance(s string) bool {
 			}
 		}
 	}
-	if len(q.arr) == 0 {
+	if q.len() == true {
 		return true
 	}
 	return false
@@ -69,4 +76,6 @@ func balance(s string) bool {
 func main() {
 	fmt.Println(balance("([)]"))
 	fmt.Println(balance("([])[]({})"))
+	fmt.Println(balance("[({})]"))
+	fmt.Println(balance("[][][][][]"))
 }
