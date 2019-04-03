@@ -22,6 +22,70 @@ For example, given the list of words ["the", "quick", "brown", "fox", "jumps", "
 
 package main
 
-func main() {
+import "fmt"
 
+func format(arr [][]string) []string {
+	ans := []string{}
+	for i := 0; i < len(arr); i++ {
+		curr := ""
+		for j := 0; j < len(arr[i]); j++ {
+			// if j%2 == 1 {
+			// 	fmt.Println(j, len(arr[i][j]))
+			// }
+			curr += arr[i][j]
+		}
+		ans = append(ans, curr)
+	}
+	return ans
+}
+
+func justify(arr []string, k int) []string {
+	ans := [][]string{}
+
+	for i := 0; i < len(arr); {
+		ll, line := 0, []string{}
+
+		line = append(line, arr[i])
+		ll += len(arr[i])
+		i++
+
+		if ll < k {
+			line = append(line, " ")
+			ll++
+		}
+
+		for i < len(arr) && ll+len(arr[i]) <= k {
+			// insert word
+			line = append(line, arr[i])
+			ll += len(arr[i])
+			i++
+
+			if i < len(arr) && ll+1+len(arr[i]) <= k {
+				line = append(line, " ")
+				ll++
+			}
+		}
+
+		// pad spaces to fill line
+		space := 1
+		for ll < k {
+			line[space] += " "
+			ll++
+			space = (space + 2) % len(line)
+		}
+		ans = append(ans, line)
+	}
+	return format(ans)
+}
+func main() {
+	list := []string{"the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"}
+	ans := justify(list, 16)
+
+	for i := 0; i < 16; i++ {
+		fmt.Print("-")
+	}
+	fmt.Println()
+	for i := range ans {
+		fmt.Println(ans[i])
+	}
 }
