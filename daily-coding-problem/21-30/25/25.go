@@ -11,3 +11,9 @@ For example, given the regular expression "ra." and the string "ray", your funct
 
 Given the regular expression ".*at" and the string "chat", your function should return true. The same regular expression on the string "chats" should return false.
 */
+
+package main
+
+func main() {
+
+}

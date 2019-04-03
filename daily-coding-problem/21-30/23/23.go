@@ -13,3 +13,36 @@ For example, given the following board:
 [f, f, f, f]]
 and start = (3, 0) (bottom left) and end = (0, 0) (top left), the minimum number of steps required to reach the end is 7, since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
 */
+package main
+
+import "fmt"
+
+type pair struct {
+	a int
+	b int
+}
+
+func path(arr [][]string, start *pair, end *pair) int {
+
+	return 0
+}
+
+func main() {
+	start := &pair{
+		a: 3,
+		b: 0,
+	}
+	end := &pair{
+		a: 0,
+		b: 0,
+	}
+
+	board := [][]string{
+		{"f", "f", "f", "f"},
+		{"t", "t", "f", "t"},
+		{"f", "f", "f", "f"},
+		{"f", "f", "f", "f"},
+	}
+
+	fmt.Println(path(board, start, end))
+}
